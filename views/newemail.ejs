@@ -39,6 +39,7 @@
       <div class="row-fluid">
         <div class="span9">
       <form method="post" id="mainform">
+
             <div class="row-fluid" >
               <div class="control-group">
                   <textarea style="font-size:18px" class="span12" id="content" name="content" placeholder="输入邮件内容" rows="27"></textarea>
@@ -80,6 +81,7 @@
   </div>
   <div class="modal-footer">
   <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+  <input type="hidden" name="_csrf" value="<%= token %>" form="mainform"/>
   </div>
   </div> 
     <script src="/javascripts/jquery-ui-1.10.0.custom.min.js"></script>

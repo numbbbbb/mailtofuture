@@ -22,11 +22,17 @@ app.configure(function(){
   app.use(app.routes);
   app.use(express.static(path.join(__dirname, 'public')));
 });
+  app.use(express.cookieParser('ilovelishiying'));
+  app.use(express.session());
+  app.use(express.csrf());
 
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
-
+app.use(function(req, res, next){
+    res.locals.token = req.session._csrf;
+    next();
+  });
 
 routes(app);
 
