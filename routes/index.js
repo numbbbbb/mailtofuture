@@ -6,7 +6,10 @@ DB = require('../modules/dbctrl');
 module.exports = function(app){
 app.get('/', function(req, res){
     res.render('index', { title: 'Express' });
-    req.session.test = '123123';
+});
+
+app.get('/fail',function(req, res){
+    res.render('fail');
 });
 
 app.get('/checkemail',function(req, res){
@@ -14,12 +17,19 @@ app.get('/checkemail',function(req, res){
 });
 
 app.post('/checkemail',function(req, res){
-    if (req.body.email == req.session.data.email){
+    if (req.body.email == req.session.email){
         res.redirect('/success');
+        var newone = new DB({
+        time:req.session.time,
+        email:req.session.email,
+        content:req.session.content,
+        });
+        newone.save();
     }
     else{
         res.redirect('/fail');
     };
+    req.session.destroy();
 });
 
 app.get('/newemail',function(req, res){
@@ -50,13 +60,9 @@ app.post('/newemail',function(req, res){
             myDate.setMonth(myDate.getMonth()+120);
             break;
     };
-	var newone = new DB({
-		time:myDate,
-		email:req.body.email,
-		content:req.body.content,
-	});
-    req.session.data = newone;
-    console.log(newone);
+    req.session.time = myDate;
+    req.session.email = req.body.email;
+    req.session.content = req.body.content;
     res.redirect('/checkemail');
     return;
 	newone.save(function(err){
