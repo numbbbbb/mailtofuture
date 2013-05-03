@@ -3,9 +3,26 @@
  * GET home page.
  */
 DB = require('../modules/dbctrl');
+smtpTransport = require('../modules/sendemail');
 module.exports = function(app){
 app.get('/', function(req, res){
     res.render('index', { title: 'Express' });
+    var mailOptions = {
+    from: "Fred Foo ✔ <foo@blurdybloop.com>", // sender address
+    to: "925184928@qq.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world ✔", // plaintext body
+    html: "<b>Hello world ✔</b>" // html body
+}
+
+smtpTransport.sendMail(mailOptions, function(error, response){
+    if(error){
+        console.log(error);
+    }else{
+        console.log("Message sent: " + response.message);
+    }
+    smtpTransport.close(); // shut down the connection pool, no more messages
+});
 });
 
 app.get('/fail',function(req, res){
