@@ -10,9 +10,49 @@
     <script src="/javascripts/bootstrap.min.js"></script>
   </head>
   <body style="background-color:#f2f2f2;overflow:hidden;">
+    <div id="showman" style="position:fixed;height:99.8%;width:100%;background:url('/images/bg_4.jpg') center no-repeat;background-size:cover;z-index:10;border-bottom:4px solid #f4efd2;box-shadow:2px 2px 3px #ccc;
+">
+     <div id="showcontent" style="position:fixed;z-index:11;top:30%;left:25%;"><font size=5 color=black>
+    <p id="s1" style="display:none;">有人说，人类的回忆都是虚假的，是通过大脑重建的场景。</p>
+    <p id="s2" style="display:none;">所以当我们面对照片、录像、日记这些真实的东西时，就会有一种特殊的感觉。</p>
+    <p id="s3" style="display:none;">如果让我说，好像是和过去的自己在冥冥中建立起了某种联系。</p>
+    <br>
+    <p id="s4" style="display:none;">给未来的自己写封邮件吧！</p>
+    <br>
+    <p id="s5" style="display:none;">给他讲讲你现在在做什么，在想什么，在奋斗什么。</p>
+    <p id="s6" style="display:none;">给未来的自己一个惊喜。</p>
+    <p class="center" id="needflash" style="display:none;">----点击鼠标左键继续----</p>
+  </font></div></div>
     <img onclick="window.open('http://codingbattlefront.herokuapp.com')" onmouseover="$(this).stop().animate({right:'0px'},200)" onmouseout="$(this).stop().animate({right:'-68px'},200)" src="/images/codinglogo.png" style="cursor:pointer;position:fixed;right:-68px;bottom:0px;z-index:100;" width="128" height="46" />
   <script type="text/javascript">
+  function flash1(){
+    $('#needflash').fadeIn(1000,function(){
+      $('#needflash').fadeOut(1000,function(){
+        setTimeout(flash1,500);
+      });
+    });
+  }
   $(document).ready(function() {  
+  $('#s1').fadeIn(2500,function(){
+    $('#s2').fadeIn(2500,function(){
+      $('#s3').fadeIn(2500,function(){
+        $('#s4').fadeIn(2500,function(){
+          $('#s5').fadeIn(2500,function(){
+            $('#s6').fadeIn(2500,function(){
+                setTimeout(flash1,500);
+                $('body').click(function(){
+                    $('#showcontent').fadeOut(function(){
+                        $('#showman').slideToggle(3000,function(){
+                      $(this).remove();
+                    });
+                    });
+                })
+            });
+          });
+        });
+      });
+    });
+  });
     $('#sidebar').mouseover(function(){
   $('#sidebar').stop().animate({opacity:1});
     })
