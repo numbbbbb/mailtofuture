@@ -3,8 +3,9 @@
  * GET home page.
  */
 var cronJob = require('cron').CronJob;
-new cronJob('00 * * * * *', function(){
-    console.log('You will see this message every second');
+new cronJob('00 00 00 * * *', function(){
+    var checkdb = new DB();
+    checkdb.findandsend();
 }, null, true,"");
 
 DB = require('../modules/dbctrl');
@@ -13,9 +14,6 @@ DB = require('../modules/dbctrl');
 module.exports = function(app){
 app.get('/', function(req, res){
     res.render('index', { title: 'Express' });
-
-var xxx = new DB();
-xxx.findandsend();
 });
 
 app.get('/fail',function(req, res){
