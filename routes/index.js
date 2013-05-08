@@ -20,13 +20,10 @@ app.get('/fail',function(req, res){
     res.render('fail');
 });
 
-app.get('/checkemail',function(req, res){
-    res.render('checkemail');
-});
-
 app.post('/checkemail',function(req, res){
-    if (req.body.email == req.session.email){
-        res.redirect('/success');
+    if (req.body.email == req.session.emailcheck){
+         res.writeHead(200, {'Content-Type': 'text/plain'}); 
+              res.end('ok2'); 
         var newone = new DB({
         time:req.session.time,
         email:req.session.email,
@@ -71,7 +68,9 @@ app.post('/newemail',function(req, res){
     req.session.time = myDate;
     req.session.email = req.body.email;
     req.session.content = req.body.content;
-    res.redirect('/checkemail');
+    console.log(req.body.email);
+     res.writeHead(200, {'Content-Type': 'text/plain'}); 
+              res.end('ok1'); 
     return;
 	newone.save(function(err){
 	if (err){

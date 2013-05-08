@@ -27,7 +27,6 @@ dbctrl.open(function(err,db){
 		}
 		collection.insert(item,{safe:true},function(err,item){
 			dbctrl.close();
-			return callback(err);
 		})
 	})
 })
