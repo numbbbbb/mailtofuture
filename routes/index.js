@@ -21,7 +21,7 @@ app.get('/fail',function(req, res){
 });
 
 app.post('/checkemail',function(req, res){
-    if (req.body.email == req.session.emailcheck){
+    if (req.body.emailcheck == req.session.email){
          res.writeHead(200, {'Content-Type': 'text/plain'}); 
               res.end('ok2'); 
         var newone = new DB({
@@ -32,12 +32,13 @@ app.post('/checkemail',function(req, res){
         newone.save();
     }
     else{
-        res.redirect('/fail');
+         res.writeHead(200, {'Content-Type': 'text/plain'}); 
+              res.end('error2'); 
     };
     req.session.destroy();
 });
 
-app.get('/newemail',function(req, res){
+app.get('/index',function(req, res){
     res.render('newemail', { title: '新邮件' });
 });
 
@@ -49,7 +50,7 @@ app.get('/success',function(req, res){
     res.render('success', { title: '新邮件' });
 });
 
-app.post('/newemail',function(req, res){
+app.post('/index',function(req, res){
     var myDate=new Date();
     switch(parseInt(req.body.timedelay)){
         case 1:
@@ -68,17 +69,8 @@ app.post('/newemail',function(req, res){
     req.session.time = myDate;
     req.session.email = req.body.email;
     req.session.content = req.body.content;
-    console.log(req.body.email);
      res.writeHead(200, {'Content-Type': 'text/plain'}); 
               res.end('ok1'); 
-    return;
-	newone.save(function(err){
-	if (err){
-		req.flash('error',err);
-		return res.redirect('/newemail');
-	}
-	res.redirect('/success');
-});
 });
 
 }
