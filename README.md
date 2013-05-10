@@ -21,3 +21,6 @@ use:
 It's still unfinish.
 
 I will add the url when I finish it.
+
+#License
+Based on the [WTFPL](http://en.wikipedia.org/wiki/WTFPL).

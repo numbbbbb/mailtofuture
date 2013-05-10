@@ -99,7 +99,7 @@
                         $("#progressbar").animate({width:((parseInt($("#progressbar").parent().width()))+100)+'px'},5000,function(){
                           $("#progressbar").parent().parent().fadeOut(1000,function(){
                               $("#successtext").fadeIn(1000);
-                              setTimeout('window.location = \'/index\';',1500); 
+                              setTimeout('window.location = \'/index/?new\';',1500); 
                           })
                         });
                       })
