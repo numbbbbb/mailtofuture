@@ -24,7 +24,6 @@ app.post('/checkemail',function(req, res){
     if (req.body.emailcheck == req.session.email){
          res.writeHead(200, {'Content-Type': 'text/plain'}); 
               res.end('ok2'); 
-
         var newone = new DB({
         time:req.session.time,
         email:req.session.email,
@@ -40,7 +39,8 @@ app.post('/checkemail',function(req, res){
 });
 
 app.get('/index',function(req, res){
-    res.render('newemail', { title: '新邮件' });
+    var getnumber = new DB();
+    getnumber.getnumber(res);
 });
 
 app.get('/flatui',function(req, res){

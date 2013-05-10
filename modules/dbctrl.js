@@ -26,6 +26,7 @@ mongo.connect(mongoUri,function(err,db){
 			return callback(err);
 		}
 		collection.insert(item,{safe:true},function(err,item){
+			checkwaitnumber();
 		})
 	})
 })
@@ -67,6 +68,112 @@ DB.prototype.remove = function remove(callback){
 })
 }
 
+DB.prototype.getnumber = function getnumber(res){
+	getwaitnumber(res,getalreadysend);
+}
+
+function getwaitnumber(res,callback){
+	mongo.connect(mongoUri,function(err,db){
+	if (err){
+		return callback(err);
+	}
+	db.collection('recordnumber',function(err,collection){
+		if (err){
+			return callback(err);
+		}
+		collection.find({waitnumber:{$exists:true}}).toArray(function(err, items) {
+                if (items.length == 0){
+                	initfield("waitnumber");
+                	callback(res,0);
+                }
+                else{
+                	callback(res,items[0].waitnumber);
+                }
+             });
+	})
+})
+}
+
+function getalreadysend(res,thewaitnumber){
+	mongo.connect(mongoUri,function(err,db){
+	if (err){
+		return callback(err);
+	}
+	db.collection('recordnumber',function(err,collection){
+		if (err){
+			return callback(err);
+		}
+		collection.find({alreadysend:{$exists:true}}).toArray(function(err, items) {
+                if (items.length == 0){
+                	initfield("alreadysend");
+                	res.render('newemail',{"waitnumber":thewaitnumber,"alreadysend":0});
+                }
+                else{
+                	res.render('newemail',{"waitnumber":thewaitnumber,"alreadysend":items[0].alreadysend});
+                }
+             });
+	})
+})
+}
+
+function checkwaitnumber(){
+	mongo.connect(mongoUri,function(err,db){
+	if (err){
+		return callback(err);
+	}
+	db.collection('recordnumber',function(err,collection){
+		if (err){
+			return callback(err);
+		}
+		collection.find({waitnumber:{$exists:true}}).toArray(function(err, items) {
+                if (items.length == 0){
+                	initfield("waitnumber");
+                }
+                else{
+                	updatefield("waitnumber",items[0].waitnumber);
+                }
+             });
+	})
+})
+}
+
+function initfield(somefield){
+	mongo.connect(mongoUri,function(err,db){
+	if (err){
+		return callback(err);
+	}
+	db.collection('recordnumber',function(err,collection){
+		if (err){
+			return callback(err);
+		}
+		var inititem = {};
+		inititem[somefield]=0;
+		console.log(inititem);
+		collection.insert(inititem,{safe:true},function(err,item){
+		})
+	})
+})
+}
+
+function updatefield(somefield,nownumber){
+	mongo.connect(mongoUri,function(err,db){
+	if (err){
+		return callback(err);
+	}
+	db.collection('recordnumber',function(err,collection){
+		if (err){
+			return callback(err);
+		}
+		var oldfield = {};
+		oldfield[somefield] = nownumber;
+		var newfield = {};
+		newfield[somefield] = nownumber+1;
+		collection.update(oldfield,newfield,function(err,item){
+		})
+	})
+})
+}
+
 function check_and_sendemail(items){
 	var today = new Date();
 	var todayyear = today.getFullYear();
@@ -98,6 +205,24 @@ smtpTransport.sendMail(mailOptions, function(error, response){
         content:items[i].content,
         });
 	needremove.remove();
+	mongo.connect(mongoUri,function(err,db){
+	if (err){
+		return callback(err);
+	}
+	db.collection('recordnumber',function(err,collection){
+		if (err){
+			return callback(err);
+		}
+		collection.find({alreadysend:{$exists:true}}).toArray(function(err, items) {
+                if (items.length == 0){
+                	initfield("alreadysend");
+                }
+                else{
+                	updatefield("alreadysend",items[0].alreadysend);
+                }
+             });
+	})
+})
 		};
 	}
 };
