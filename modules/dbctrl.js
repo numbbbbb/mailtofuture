@@ -1,4 +1,5 @@
-var dbctrl = require('./dbconnect');
+var mongo = require('./dbconnect').mongo;
+var mongoUri = require('./dbconnect').mongoUri;
 var smtpTransport = require('./sendemail');
 
 function DB(){
@@ -16,34 +17,30 @@ DB.prototype.save = function save(callback){
 		email:this.email,
 		content:this.content,
 	};
-dbctrl.open(function(err,db){
+mongo.connect(mongoUri,function(err,db){
 	if (err){
 		return callback(err);
 	}
 	db.collection('mailtofuture',function(err,collection){
 		if (err){
-			dbctrl.close();
 			return callback(err);
 		}
 		collection.insert(item,{safe:true},function(err,item){
-			dbctrl.close();
 		})
 	})
 })
 };
 
 DB.prototype.findandsend = function find(callback){
-	dbctrl.open(function(err,db){
+	mongo.connect(mongoUri,function(err,db){
 	if (err){
 		return callback(err);
 	}
 	db.collection('mailtofuture',function(err,collection){
 		if (err){
-			dbctrl.close();
 			return callback(err);
 		}
 		collection.find().toArray(function(err, items) {
-				dbctrl.close();
                 check_and_sendemail(items);
              });
 	})
@@ -56,17 +53,15 @@ DB.prototype.remove = function remove(callback){
 		email:this.email,
 		content:this.content,
 	};
-	dbctrl.open(function(err,db){
+	mongo.connect(mongoUri,function(err,db){
 	if (err){
 		return callback(err);
 	}
 	db.collection('mailtofuture',function(err,collection){
 		if (err){
-			dbctrl.close();
 			return callback(err);
 		}
 		collection.remove(item,{safe:true},function(err,item){
-			dbctrl.close();
 		})
 	})
 })

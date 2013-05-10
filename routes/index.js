@@ -24,6 +24,7 @@ app.post('/checkemail',function(req, res){
     if (req.body.emailcheck == req.session.email){
          res.writeHead(200, {'Content-Type': 'text/plain'}); 
               res.end('ok2'); 
+
         var newone = new DB({
         time:req.session.time,
         email:req.session.email,
