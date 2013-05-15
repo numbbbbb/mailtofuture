@@ -125,6 +125,14 @@
     });
   }
   $(document).ready(function() {  
+    $(window).resize(function() {
+      $("#content").attr('rows',parseInt(parseInt(document.documentElement.clientHeight)*27/643));
+    $("#confirmpart").css('margin-top',parseInt($("#content").height())-136);
+    $("#numberpart").css('margin-top',parseInt($("#content").height())-50);
+    })
+    $("#content").attr('rows',parseInt(parseInt(document.documentElement.clientHeight)*27/643));
+    $("#confirmpart").css('margin-top',parseInt($("#content").height())-136);
+    $("#numberpart").css('margin-top',parseInt($("#content").height())-50);
     $("#confirmbtn").addClass("disabled");
     $("#confirmbtn").attr("disabled","disabled");
   $('#s1').fadeIn(2500,function(){
@@ -150,10 +158,10 @@
     });
   });
     $('#sidebar').mouseover(function(){
-  $('#sidebar').stop().animate({opacity:1});
+  $('#sidebar,#numberpart').stop().animate({opacity:1});
     })
     $('#contentpart').mouseover(function(){
-      checkuse=1;$('#sidebar').stop().animate({opacity:0.05})
+      checkuse=1;$('#sidebar,#numberpart').stop().animate({opacity:0.05})
     })
   $("#content,#email").focus(function (){
     $(this).parent().removeClass("error");
@@ -188,15 +196,17 @@
         <div class="span12"></div>
       </div>
       <div class="row-fluid">
-        <div class="span3">
-          <p><%= waitnumber %></p>
-          <p><%= alreadysend %></p>
+        <div class="span3" style="color:#bdc3c7;" id="numberpart">
+          <center>
+          <p>等待发送：<%= waitnumber %></p>
+          <p>已经发送：<%= alreadysend %></p>
+        </center>
         </div>
         <div class="span6" id="contentpart">
       <form method="post" id="mainform" onsubmit="return mainsubmit();">
             <div class="row-fluid" >
               <div class="control-group">
-                  <textarea style="font-size:18px;border:2px dashed #ccc;opacity:0.7;resize:none;" class="span12" id="content" name="content" placeholder="输入邮件内容" rows="27"></textarea>
+                  <textarea style="font-size:18px;border:2px dashed #ccc;opacity:0.7;resize:none;" class="span12" id="content" name="content" placeholder="输入邮件内容"></textarea>
               </div>
             </div>
             <div class="row-fluid" style="display:none;">
@@ -220,7 +230,7 @@
                           <option value="4">十年后</option>
                         </select>
                    </div>
-                    <div class="row-fluid" style="margin-top:420px;">
+                    <div class="row-fluid" id="confirmpart">
                                <button id="confirmbtn" class="btn btn-large btn-block btn-info">确认</button>
                              </div>
                  </div>
